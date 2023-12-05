@@ -11,7 +11,9 @@ fs.readFile(filePath, 'utf8', (err, data) => {
   const calibrationValues = []
 
   
-  findCalibrationValue(splitFile, calibrationValues)
+  //findCalibrationValue(splitFile, calibrationValues)
+  
+  findWithRegex(splitFile, calibrationValues)
   const result = sumCalibrationValues(calibrationValues)
   console.log(result)
 });
@@ -37,4 +39,36 @@ function findCalibrationValue(file,array) {
     }
     if (firstDigit) array.push(parseInt(firstDigit+lastDigit))
   }
+}
+
+function findWithRegex(file, array) {
+  const regex = /(?:one|two|three|four|five|six|seven|eight|nine|[1-9])/g
+  for (const row of file) {
+    let match;
+    while ((match = regex.exec(row)) !== null) {
+      console.log(`Found match: ${match[0]} at index ${match.index}`)
+      const firstDigit = convertToNumber(match[0])
+      let lastDigit = convertToNumber(match[0])
+      console.log("firstDigit:", firstDigit)
+      console.log("lastDigit:", lastDigit)
+      //array.push(parseInt(firstDigit+lastDigit))
+    }
+  }
+  console.log(array)
+}
+
+function convertToNumber(textNumber) {
+  const numberMap = {
+    one: '1',
+    two: '2',
+    three: '3',
+    four: '4',
+    five: '5',
+    six: '6',
+    seven: '7',
+    eight: '8',
+    nine: '9'
+  };
+
+  return numberMap[textNumber] || textNumber;
 }
