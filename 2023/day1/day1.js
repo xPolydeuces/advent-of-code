@@ -42,17 +42,15 @@ function findCalibrationValue(file,array) {
 }
 
 function findWithRegex(file, array) {
-  const regex = /(?:one|two|three|four|five|six|seven|eight|nine|[1-9])/g
+  const regex = /(?:one|two|three|four|five|six|seven|eight|nine|[1-9])/gi
   for (const row of file) {
     let match;
+    const matches = []
     while ((match = regex.exec(row)) !== null) {
-      console.log(`Found match: ${match[0]} at index ${match.index}`)
-      const firstDigit = convertToNumber(match[0])
-      let lastDigit = convertToNumber(match[0])
-      console.log("firstDigit:", firstDigit)
-      console.log("lastDigit:", lastDigit)
-      //array.push(parseInt(firstDigit+lastDigit))
+      matches.push(match[0])
     }
+    const calibrationValue = parseInt(convertToNumber(matches[0])+convertToNumber(matches[matches.length-1]))
+    if (!isNaN(calibrationValue)) array.push(calibrationValue)
   }
   console.log(array)
 }
